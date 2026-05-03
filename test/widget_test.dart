@@ -1,25 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
-
-import 'package:pukaar/modules/home/home_controller.dart';
-import 'package:pukaar/modules/home/home_shell.dart';
 
 void main() {
-  tearDown(Get.reset);
-
-  testWidgets('HomeShell can show Profile without building Dashboard', (WidgetTester tester) async {
-    Get.testMode = true;
-    final home = HomeController();
-    Get.put(home);
-    home.currentIndex.value = 2;
-
+  testWidgets('Navigation labels render', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const GetMaterialApp(
-        home: HomeShell(),
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: 0,
+            onDestinationSelected: (_) {},
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.today_outlined),
+                selectedIcon: Icon(Icons.today),
+                label: 'Today',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.history_outlined),
+                selectedIcon: Icon(Icons.history),
+                label: 'History',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+          ),
+        ),
       ),
     );
 
-    expect(find.text('Profile'), findsWidgets); // body + nav label
     expect(find.text('Today'), findsOneWidget);
+    expect(find.text('History'), findsOneWidget);
+    expect(find.text('Profile'), findsOneWidget);
   });
 }

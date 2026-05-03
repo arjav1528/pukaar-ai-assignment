@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import 'package:pukaar/app/routes/app_routes.dart';
 import 'package:pukaar/data/services/auth_service.dart';
 
 class AuthController extends GetxController {
@@ -33,6 +34,7 @@ class AuthController extends GetxController {
     isLoading.value = true;
     try {
       await authService.signInWithGoogle();
+      Get.offAllNamed(AppRoutes.home);
     } on SignInCancelledException {
       // User closed the picker — no snackbar.
     } catch (e, _) {
@@ -47,6 +49,7 @@ class AuthController extends GetxController {
     isLoading.value = true;
     try {
       await authService.signOut();
+      Get.offAllNamed(AppRoutes.login);
     } catch (e, _) {
       Get.snackbar('Sign out failed', '$e');
     } finally {
