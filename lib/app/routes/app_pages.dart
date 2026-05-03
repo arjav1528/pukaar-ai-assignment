@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pukaar/app/middlewares/auth_middleware.dart';
 import 'package:pukaar/modules/auth/login_view.dart';
+import 'package:pukaar/modules/home/home_binding.dart';
 import 'package:pukaar/modules/home/home_shell.dart';
 import 'package:pukaar/modules/splash/splash_binding.dart';
 import 'package:pukaar/modules/splash/splash_view.dart';
@@ -24,6 +25,7 @@ abstract final class AppPages {
     GetPage<void>(
       name: AppRoutes.home,
       page: () => const HomeShell(),
+      binding: HomeBinding(),
       middlewares: <GetMiddleware>[AuthMiddleware()],
     ),
   ];
