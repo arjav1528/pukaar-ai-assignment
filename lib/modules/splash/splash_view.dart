@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-/// Placeholder shell; auth-based navigation is added with [SplashController].
-class SplashView extends StatelessWidget {
+import 'splash_controller.dart';
+
+class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
 
   @override
