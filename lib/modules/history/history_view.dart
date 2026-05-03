@@ -53,16 +53,41 @@ class HistoryView extends GetView<HistoryController> {
         return ListView.separated(
           padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
           itemCount: days.length,
-          separatorBuilder: (context, _) => Divider(height: 1.h),
+          separatorBuilder: (context, _) => SizedBox(height: 10.h),
           itemBuilder: (context, i) {
             final day = days[i];
             final totals = byDay[day] ?? {};
 
-            return ListTile(
-              title: Text(_formatDayLabel(day), style: theme.textTheme.titleMedium),
-              subtitle: Text(_subtitle(totals)),
-              trailing: Icon(Icons.chevron_right, size: 22.r),
-              onTap: () => Get.toNamed(AppRoutes.historyDay, arguments: day),
+            return Card(
+              margin: EdgeInsets.zero,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16.r),
+                onTap: () => Get.toNamed(AppRoutes.historyDay, arguments: day),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                    title: Text(
+                      _formatDayLabel(day),
+                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Padding(
+                      padding: EdgeInsets.only(top: 4.h),
+                      child: Text(
+                        _subtitle(totals),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right_rounded,
+                      size: 22.r,
+                      color: theme.colorScheme.outline,
+                    ),
+                  ),
+                ),
+              ),
             );
           },
         );

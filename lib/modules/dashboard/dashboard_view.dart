@@ -41,22 +41,45 @@ class DashboardView extends GetView<DashboardController> {
             final greeting = (name != null && name.isNotEmpty) ? 'Hello, $name' : 'Hello';
 
             return ListView(
-              padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 120.h),
+              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 120.h),
               children: [
-                Text(
-                  greeting,
-                  style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceContainerLow,
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(
+                      color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          greeting,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          'Your day',
+                          style: theme.textTheme.headlineSmall,
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          today,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Text(
-                  'Your day',
-                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  today,
-                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                ),
-                SizedBox(height: 24.h),
+                SizedBox(height: 20.h),
                 MetricCard(
                   title: 'Water',
                   valueText: _fmt(controller.waterGlasses.value),

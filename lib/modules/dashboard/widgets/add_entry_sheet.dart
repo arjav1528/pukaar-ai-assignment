@@ -105,7 +105,17 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Add entry', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            Text(
+              'Add entry',
+              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              'Log water, steps, or calories for today.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
             SizedBox(height: 16.h),
             SegmentedButton<MetricType>(
               segments: [
@@ -148,6 +158,10 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
             SizedBox(height: 24.h),
             FilledButton(
               onPressed: _submit,
+              style: FilledButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 14.h),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              ),
               child: const Text('Save'),
             ),
           ],

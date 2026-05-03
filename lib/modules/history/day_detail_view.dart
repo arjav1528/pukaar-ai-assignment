@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:pukaar/app/theme/app_colors.dart';
 import 'package:pukaar/data/models/activity_entry.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
@@ -43,6 +44,22 @@ class DayDetailView extends StatelessWidget {
     return DateFormat.jm().format(t);
   }
 
+  Color _metricColor(MetricType m) {
+    return switch (m) {
+      MetricType.water => AppColors.water,
+      MetricType.steps => AppColors.steps,
+      MetricType.calories => AppColors.calories,
+    };
+  }
+
+  IconData _metricIcon(MetricType m) {
+    return switch (m) {
+      MetricType.water => Icons.water_drop_rounded,
+      MetricType.steps => Icons.directions_walk_rounded,
+      MetricType.calories => Icons.local_fire_department_rounded,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final dateKey = Get.arguments as String? ?? '';
@@ -64,17 +81,26 @@ class DayDetailView extends StatelessWidget {
                 final list = snap.data ?? [];
                 if (list.isEmpty) {
                   return Center(
-                    child: Text(
-                      'No entries for this day.',
-                      style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    child: Padding(
+                      padding: EdgeInsets.all(24.r),
+                      child: Text(
+                        'No entries for this day.',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.45,
+                        ),
+                      ),
                     ),
                   );
                 }
-                return ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                return ListView.separated(
+                  padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
                   itemCount: list.length,
+                  separatorBuilder: (context, index) => SizedBox(height: 8.h),
                   itemBuilder: (context, i) {
                     final e = list[i];
+                    final accent = _metricColor(e.metric);
                     return Dismissible(
                       key: ValueKey(e.id),
                       direction: DismissDirection.endToStart,
@@ -88,16 +114,64 @@ class DayDetailView extends StatelessWidget {
                         }
                       },
                       background: Container(
-                        color: theme.colorScheme.errorContainer,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.errorContainer,
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
                         alignment: Alignment.centerRight,
-                        padding: EdgeInsets.only(right: 24.w),
-                        child: Icon(Icons.delete_outline, color: theme.colorScheme.onErrorContainer, size: 24.r),
+                        padding: EdgeInsets.only(right: 20.w),
+                        child: Icon(
+                          Icons.delete_outline_rounded,
+                          color: theme.colorScheme.onErrorContainer,
+                          size: 24.r,
+                        ),
                       ),
-                      child: ListTile(
-                        title: Text('${_metricTitle(e.metric)} · ${_formatValue(e)}'),
-                        subtitle: e.note != null && e.note!.isNotEmpty
-                            ? Text('${e.note} · ${_time(e)}')
-                            : Text(_time(e)),
+                      child: Card(
+                        margin: EdgeInsets.zero,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+                          leading: CircleAvatar(
+                            backgroundColor: accent.withValues(alpha: 0.14),
+                            foregroundColor: accent,
+                            child: Icon(_metricIcon(e.metric), size: 22.r),
+                          ),
+                          title: Text(
+                            _metricTitle(e.metric),
+                            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          subtitle: Padding(
+                            padding: EdgeInsets.only(top: 4.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _formatValue(e),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: theme.colorScheme.onSurface,
+                                  ),
+                                ),
+                                if (e.note != null && e.note!.isNotEmpty) ...[
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    e.note!,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                                if (_time(e).isNotEmpty) ...[
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    _time(e),
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      color: theme.colorScheme.outline,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },

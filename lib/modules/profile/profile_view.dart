@@ -20,40 +20,59 @@ class ProfileView extends StatelessWidget {
         final photo = user?.photoURL;
 
         return ListView(
-          padding: EdgeInsets.all(24.r),
+          padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 24.h),
           children: [
-            SizedBox(height: 16.h),
-            Center(
-              child: CircleAvatar(
-                radius: 48.r,
-                backgroundImage: photo != null ? NetworkImage(photo) : null,
-                child: photo == null
-                    ? Text(
-                        name.isNotEmpty ? name[0].toUpperCase() : '?',
-                        style: theme.textTheme.headlineMedium,
-                      )
-                    : null,
+            SizedBox(height: 8.h),
+            Card(
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 28.h),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 44.r,
+                      backgroundColor: theme.colorScheme.primaryContainer,
+                      foregroundColor: theme.colorScheme.onPrimaryContainer,
+                      backgroundImage: photo != null ? NetworkImage(photo) : null,
+                      child: photo == null
+                          ? Text(
+                              name.isNotEmpty ? name[0].toUpperCase() : '?',
+                              style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
+                            )
+                          : null,
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      name,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleLarge,
+                    ),
+                    if (email.isNotEmpty) ...[
+                      SizedBox(height: 6.h),
+                      Text(
+                        email,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 20.h),
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            if (email.isNotEmpty) ...[
-              SizedBox(height: 8.h),
-              Text(
-                email,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            SizedBox(height: 24.h),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: auth.isLoading.value ? null : auth.logout,
+                icon: const Icon(Icons.logout_rounded),
+                label: auth.isLoading.value ? const Text('Signing out…') : const Text('Sign out'),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                ),
               ),
-            ],
-            SizedBox(height: 40.h),
-            OutlinedButton.icon(
-              onPressed: auth.isLoading.value ? null : auth.logout,
-              icon: const Icon(Icons.logout),
-              label: auth.isLoading.value ? const Text('Signing out…') : const Text('Sign out'),
             ),
           ],
         );
