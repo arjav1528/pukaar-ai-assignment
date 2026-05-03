@@ -1,0 +1,138 @@
+import 'package:flutter/material.dart';
+
+import 'package:pukaar/data/models/metric_type.dart';
+
+class AddEntryResult {
+  const AddEntryResult({
+    required this.metric,
+    required this.value,
+    this.note,
+  });
+
+  final MetricType metric;
+  final num value;
+  final String? note;
+}
+
+/// Modal form for logging activity; persistence is wired in the next commit.
+class AddEntrySheet extends StatefulWidget {
+  const AddEntrySheet({super.key, this.initialMetric});
+
+  final MetricType? initialMetric;
+
+  static Future<AddEntryResult?> open(
+    BuildContext context, {
+    MetricType? initialMetric,
+  }) {
+    return showModalBottomSheet<AddEntryResult>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (ctx) => AddEntrySheet(initialMetric: initialMetric),
+    );
+  }
+
+  @override
+  State<AddEntrySheet> createState() => _AddEntrySheetState();
+}
+
+class _AddEntrySheetState extends State<AddEntrySheet> {
+  late MetricType _metric;
+  final _valueCtrl = TextEditingController();
+  final _noteCtrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _metric = widget.initialMetric ?? MetricType.water;
+  }
+
+  @override
+  void dispose() {
+    _valueCtrl.dispose();
+    _noteCtrl.dispose();
+    super.dispose();
+  }
+
+  String _hintFor(MetricType m) {
+    switch (m) {
+      case MetricType.water:
+        return 'Glasses';
+      case MetricType.steps:
+        return 'Steps';
+      case MetricType.calories:
+        return 'kcal';
+    }
+  }
+
+  void _submit() {
+    final raw = _valueCtrl.text.trim();
+    final parsed = num.tryParse(raw);
+    if (parsed == null || parsed <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter a positive number')),
+      );
+      return;
+    }
+    final note = _noteCtrl.text.trim();
+    Navigator.of(context).pop(
+      AddEntryResult(
+        metric: _metric,
+        value: parsed,
+        note: note.isEmpty ? null : note,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Add entry', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            SegmentedButton<MetricType>(
+              segments: const [
+                ButtonSegment(value: MetricType.water, label: Text('Water'), icon: Icon(Icons.water_drop_outlined)),
+                ButtonSegment(value: MetricType.steps, label: Text('Steps'), icon: Icon(Icons.directions_walk)),
+                ButtonSegment(value: MetricType.calories, label: Text('Cal'), icon: Icon(Icons.local_fire_department_outlined)),
+              ],
+              selected: {_metric},
+              onSelectionChanged: (s) => setState(() => _metric = s.first),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _valueCtrl,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: InputDecoration(
+                labelText: 'Amount (${_hintFor(_metric)})',
+              ),
+              autofocus: true,
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _noteCtrl,
+              decoration: const InputDecoration(
+                labelText: 'Note (optional)',
+              ),
+              maxLines: 2,
+            ),
+            const SizedBox(height: 24),
+            FilledButton(
+              onPressed: _submit,
+              child: const Text('Save'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
