@@ -1,0 +1,33 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "pukaar-ai-assignment",
+          "appId": "1:770735234369:android:a6b7b9f3c625fae4a095c0",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "pukaar-ai-assignment",
+          "appId": "1:770735234369:ios:1a255cc277955680a095c0",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "pukaar-ai-assignment",
+          "configurations": {
+            "android": "1:770735234369:android:a6b7b9f3c625fae4a095c0",
+            "ios": "1:770735234369:ios:1a255cc277955680a095c0"
+          }
+        }
+      }
+    }
+  }
+}
