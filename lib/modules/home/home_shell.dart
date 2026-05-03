@@ -14,14 +14,7 @@ class HomeShell extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        body: IndexedStack(
-          index: controller.currentIndex.value,
-          children: const [
-            DashboardView(),
-            HistoryView(),
-            ProfileView(),
-          ],
-        ),
+        body: _TabBody(index: controller.currentIndex.value),
         bottomNavigationBar: NavigationBar(
           selectedIndex: controller.currentIndex.value,
           onDestinationSelected: controller.setTab,
@@ -45,5 +38,23 @@ class HomeShell extends GetView<HomeController> {
         ),
       ),
     );
+  }
+}
+
+class _TabBody extends StatelessWidget {
+  const _TabBody({required this.index});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (index) {
+      case 0:
+        return const DashboardView();
+      case 1:
+        return const HistoryView();
+      default:
+        return const ProfileView();
+    }
   }
 }

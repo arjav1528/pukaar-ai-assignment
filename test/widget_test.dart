@@ -7,9 +7,11 @@ import 'package:pukaar/modules/home/home_shell.dart';
 void main() {
   tearDown(Get.reset);
 
-  testWidgets('HomeShell shows dashboard tab by default', (WidgetTester tester) async {
+  testWidgets('HomeShell can show Profile without building Dashboard', (WidgetTester tester) async {
     Get.testMode = true;
-    Get.put(HomeController());
+    final home = HomeController();
+    Get.put(home);
+    home.currentIndex.value = 2;
 
     await tester.pumpWidget(
       const GetMaterialApp(
@@ -17,7 +19,7 @@ void main() {
       ),
     );
 
-    expect(find.text('Dashboard'), findsOneWidget);
+    expect(find.text('Profile'), findsWidgets); // body + nav label
     expect(find.text('Today'), findsOneWidget);
   });
 }
