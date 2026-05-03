@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pukaar/data/models/activity_entry.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
+import 'package:pukaar/shared/utils/app_log.dart';
 
 class HistoryController extends GetxController {
   HistoryController({FirestoreService? firestore})
@@ -35,7 +36,24 @@ class HistoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _sub = _firestore.streamAllEntries().listen((list) => entries.assignAll(list));
+    pukaarLog('HistoryController.onInit: streamAllEntries', tag: 'Pukaar.History');
+    _sub = _firestore.streamAllEntries().listen(
+      (list) {
+        pukaarLog(
+          'HistoryController: stream snapshot count=${list.length}',
+          tag: 'Pukaar.History',
+        );
+        entries.assignAll(list);
+      },
+      onError: (Object e, StackTrace st) {
+        pukaarLog(
+          'HistoryController: stream ERROR',
+          tag: 'Pukaar.History',
+          error: e,
+          stackTrace: st,
+        );
+      },
+    );
   }
 
   @override

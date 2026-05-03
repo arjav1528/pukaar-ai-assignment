@@ -6,6 +6,7 @@ import 'package:pukaar/data/models/activity_entry.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
 import 'package:pukaar/modules/dashboard/widgets/add_entry_sheet.dart';
+import 'package:pukaar/shared/utils/app_log.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
 import 'package:pukaar/shared/utils/snackbar_utils.dart';
 
@@ -26,27 +27,45 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _sub = _firestore.streamEntriesForDateKey(_todayKey).listen((entries) {
-      num w = 0;
-      num s = 0;
-      num c = 0;
-      for (final e in entries) {
-        switch (e.metric) {
-          case MetricType.water:
-            w += e.value;
-            break;
-          case MetricType.steps:
-            s += e.value;
-            break;
-          case MetricType.calories:
-            c += e.value;
-            break;
+    pukaarLog(
+      'DashboardController.onInit: subscribe entries dateKey=$_todayKey',
+      tag: 'Pukaar.Dashboard',
+    );
+    _sub = _firestore.streamEntriesForDateKey(_todayKey).listen(
+      (entries) {
+        pukaarLog(
+          'DashboardController: stream snapshot count=${entries.length}',
+          tag: 'Pukaar.Dashboard',
+        );
+        num w = 0;
+        num s = 0;
+        num c = 0;
+        for (final e in entries) {
+          switch (e.metric) {
+            case MetricType.water:
+              w += e.value;
+              break;
+            case MetricType.steps:
+              s += e.value;
+              break;
+            case MetricType.calories:
+              c += e.value;
+              break;
+          }
         }
-      }
-      waterGlasses.value = w.toDouble();
-      steps.value = s.toDouble();
-      calories.value = c.toDouble();
-    });
+        waterGlasses.value = w.toDouble();
+        steps.value = s.toDouble();
+        calories.value = c.toDouble();
+      },
+      onError: (Object e, StackTrace st) {
+        pukaarLog(
+          'DashboardController: entries stream ERROR',
+          tag: 'Pukaar.Dashboard',
+          error: e,
+          stackTrace: st,
+        );
+      },
+    );
   }
 
   @override
@@ -57,14 +76,20 @@ class DashboardController extends GetxController {
 
   Future<void> submitEntry(AddEntryResult result) async {
     try {
+      pukaarLog(
+        'DashboardController.submitEntry: ${result.metric} value=${result.value}',
+        tag: 'Pukaar.Dashboard',
+      );
       await _firestore.addEntry(
         metric: result.metric,
         value: result.value,
         dateKey: _todayKey,
         note: result.note,
       );
+      pukaarLog('DashboardController.submitEntry: addEntry ok', tag: 'Pukaar.Dashboard');
       showAppSnack('Saved', 'Your entry was added.');
-    } catch (e, _) {
+    } catch (e, st) {
+      pukaarLog('DashboardController.submitEntry: error', tag: 'Pukaar.Dashboard', error: e, stackTrace: st);
       showErrorSnack('$e');
     }
   }
