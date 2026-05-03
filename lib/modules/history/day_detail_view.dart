@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -70,7 +71,7 @@ class DayDetailView extends StatelessWidget {
                   );
                 }
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
                   itemCount: list.length,
                   itemBuilder: (context, i) {
                     final e = list[i];
@@ -89,8 +90,8 @@ class DayDetailView extends StatelessWidget {
                       background: Container(
                         color: theme.colorScheme.errorContainer,
                         alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 24),
-                        child: Icon(Icons.delete_outline, color: theme.colorScheme.onErrorContainer),
+                        padding: EdgeInsets.only(right: 24.w),
+                        child: Icon(Icons.delete_outline, color: theme.colorScheme.onErrorContainer, size: 24.r),
                       ),
                       child: ListTile(
                         title: Text('${_metricTitle(e.metric)} · ${_formatValue(e)}'),

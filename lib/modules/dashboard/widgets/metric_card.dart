@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MetricCard extends StatelessWidget {
   const MetricCard({
@@ -25,18 +26,18 @@ class MetricCard extends StatelessWidget {
       child: InkWell(
         onTap: onAdd,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20.r),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    width: 10,
-                    height: 10,
+                    width: 10.r,
+                    height: 10.r,
                     decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
                       title,
@@ -48,16 +49,16 @@ class MetricCard extends StatelessWidget {
                       visualDensity: VisualDensity.compact,
                       tooltip: 'Add',
                       onPressed: onAdd,
-                      icon: Icon(Icons.add_circle_outline, color: accent),
+                      icon: Icon(Icons.add_circle_outline, color: accent, size: 22.r),
                     ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 valueText,
                 style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
               Text(
                 subtitle,
                 style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),

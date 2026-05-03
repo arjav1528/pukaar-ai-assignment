@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyState extends StatelessWidget {
   const EmptyState({
@@ -15,12 +16,12 @@ class EmptyState extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.r),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: theme.colorScheme.outline),
-            const SizedBox(height: 12),
+            Icon(icon, size: 48.r, color: theme.colorScheme.outline),
+            SizedBox(height: 12.h),
             Text(
               message,
               textAlign: TextAlign.center,

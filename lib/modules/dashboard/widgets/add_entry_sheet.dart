@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pukaar/data/models/metric_type.dart';
 
@@ -99,23 +100,35 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
     return Padding(
       padding: EdgeInsets.only(bottom: bottomInset),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+        padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text('Add entry', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             SegmentedButton<MetricType>(
-              segments: const [
-                ButtonSegment(value: MetricType.water, label: Text('Water'), icon: Icon(Icons.water_drop_outlined)),
-                ButtonSegment(value: MetricType.steps, label: Text('Steps'), icon: Icon(Icons.directions_walk)),
-                ButtonSegment(value: MetricType.calories, label: Text('Cal'), icon: Icon(Icons.local_fire_department_outlined)),
+              segments: [
+                ButtonSegment(
+                  value: MetricType.water,
+                  label: const Text('Water'),
+                  icon: Icon(Icons.water_drop_outlined, size: 18.r),
+                ),
+                ButtonSegment(
+                  value: MetricType.steps,
+                  label: const Text('Steps'),
+                  icon: Icon(Icons.directions_walk, size: 18.r),
+                ),
+                ButtonSegment(
+                  value: MetricType.calories,
+                  label: const Text('Cal'),
+                  icon: Icon(Icons.local_fire_department_outlined, size: 18.r),
+                ),
               ],
               selected: {_metric},
               onSelectionChanged: (s) => setState(() => _metric = s.first),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             TextField(
               controller: _valueCtrl,
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -124,7 +137,7 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
               ),
               autofocus: true,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             TextField(
               controller: _noteCtrl,
               decoration: const InputDecoration(
@@ -132,7 +145,7 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
               ),
               maxLines: 2,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             FilledButton(
               onPressed: _submit,
               child: const Text('Save'),

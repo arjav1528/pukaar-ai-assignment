@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -40,7 +41,7 @@ class DashboardView extends GetView<DashboardController> {
             final greeting = (name != null && name.isNotEmpty) ? 'Hello, $name' : 'Hello';
 
             return ListView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+              padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 120.h),
               children: [
                 Text(
                   greeting,
@@ -50,12 +51,12 @@ class DashboardView extends GetView<DashboardController> {
                   'Your day',
                   style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   today,
                   style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 MetricCard(
                   title: 'Water',
                   valueText: _fmt(controller.waterGlasses.value),
@@ -63,7 +64,7 @@ class DashboardView extends GetView<DashboardController> {
                   accent: AppColors.water,
                   onAdd: () => openAdd(MetricType.water),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 MetricCard(
                   title: 'Steps',
                   valueText: _fmt(controller.steps.value),
@@ -71,7 +72,7 @@ class DashboardView extends GetView<DashboardController> {
                   accent: AppColors.steps,
                   onAdd: () => openAdd(MetricType.steps),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 MetricCard(
                   title: 'Calories',
                   valueText: _fmt(controller.calories.value),

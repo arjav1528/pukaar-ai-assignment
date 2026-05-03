@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:pukaar/modules/auth/auth_controller.dart';
@@ -19,12 +20,12 @@ class ProfileView extends StatelessWidget {
         final photo = user?.photoURL;
 
         return ListView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24.r),
           children: [
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Center(
               child: CircleAvatar(
-                radius: 48,
+                radius: 48.r,
                 backgroundImage: photo != null ? NetworkImage(photo) : null,
                 child: photo == null
                     ? Text(
@@ -34,21 +35,21 @@ class ProfileView extends StatelessWidget {
                     : null,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Text(
               name,
               textAlign: TextAlign.center,
               style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             if (email.isNotEmpty) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 email,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
             ],
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
             OutlinedButton.icon(
               onPressed: auth.isLoading.value ? null : auth.logout,
               icon: const Icon(Icons.logout),

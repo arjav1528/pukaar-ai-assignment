@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -50,9 +51,9 @@ class HistoryView extends GetView<HistoryController> {
         final byDay = controller.totalsByDay();
 
         return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
           itemCount: days.length,
-          separatorBuilder: (context, _) => const Divider(height: 1),
+          separatorBuilder: (context, _) => Divider(height: 1.h),
           itemBuilder: (context, i) {
             final day = days[i];
             final totals = byDay[day] ?? {};
@@ -60,7 +61,7 @@ class HistoryView extends GetView<HistoryController> {
             return ListTile(
               title: Text(_formatDayLabel(day), style: theme.textTheme.titleMedium),
               subtitle: Text(_subtitle(totals)),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: Icon(Icons.chevron_right, size: 22.r),
               onTap: () => Get.toNamed(AppRoutes.historyDay, arguments: day),
             );
           },

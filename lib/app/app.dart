@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pukaar/app/bindings/initial_binding.dart';
 import 'package:pukaar/app/routes/app_pages.dart';
@@ -12,12 +13,19 @@ class PukaarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     pukaarLog('PukaarApp.build initialRoute=${AppRoutes.splash}', tag: 'Pukaar.App');
-    return GetMaterialApp(
-      title: 'Pukaar',
-      theme: AppTheme.light(),
-      initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.splash,
-      getPages: AppPages.routes,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, _) {
+        return GetMaterialApp(
+          title: 'Pukaar',
+          theme: AppTheme.light(),
+          initialBinding: InitialBinding(),
+          initialRoute: AppRoutes.splash,
+          getPages: AppPages.routes,
+        );
+      },
     );
   }
 }

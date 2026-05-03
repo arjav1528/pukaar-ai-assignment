@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'auth_controller.dart';
@@ -14,25 +15,25 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: EdgeInsets.symmetric(horizontal: 28.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(Icons.favorite_rounded, size: 56, color: theme.colorScheme.primary),
-              const SizedBox(height: 24),
+              Icon(Icons.favorite_rounded, size: 56.r, color: theme.colorScheme.primary),
+              SizedBox(height: 24.h),
               Text(
                 'Pukaar',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 'Track water, steps, and calories in one place.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
-              const SizedBox(height: 48),
+              SizedBox(height: 48.h),
               Obx(() {
                 final loading = auth.isLoading.value;
                 return loading
@@ -42,7 +43,7 @@ class LoginView extends StatelessWidget {
                         label: const Text('Continue with Google'),
                         onPressed: auth.loginWithGoogle,
                         style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
                         ),
                       );
               }),
