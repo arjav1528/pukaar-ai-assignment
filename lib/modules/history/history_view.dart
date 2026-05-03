@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:pukaar/app/routes/app_routes.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
 
@@ -65,7 +66,7 @@ class HistoryView extends GetView<HistoryController> {
               title: Text(_formatDayLabel(day), style: theme.textTheme.titleMedium),
               subtitle: Text(_subtitle(totals)),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => Get.snackbar('Day selected', day),
+              onTap: () => Get.toNamed(AppRoutes.historyDay, arguments: day),
             );
           },
         );
