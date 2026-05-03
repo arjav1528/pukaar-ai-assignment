@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pukaar/data/models/activity_entry.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
+import 'package:pukaar/modules/dashboard/widgets/add_entry_sheet.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
 
 class DashboardController extends GetxController {
@@ -51,5 +52,19 @@ class DashboardController extends GetxController {
   void onClose() {
     _sub?.cancel();
     super.onClose();
+  }
+
+  Future<void> submitEntry(AddEntryResult result) async {
+    try {
+      await _firestore.addEntry(
+        metric: result.metric,
+        value: result.value,
+        dateKey: _todayKey,
+        note: result.note,
+      );
+      Get.snackbar('Saved', 'Your entry was added.');
+    } catch (e, _) {
+      Get.snackbar('Could not save', '$e');
+    }
   }
 }

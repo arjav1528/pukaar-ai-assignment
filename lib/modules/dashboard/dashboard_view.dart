@@ -20,7 +20,10 @@ class DashboardView extends GetView<DashboardController> {
     final today = DateFormat.yMMMEd().format(DateTime.now());
 
     Future<void> openAdd([MetricType? initial]) async {
-      await AddEntrySheet.open(context, initialMetric: initial);
+      final result = await AddEntrySheet.open(context, initialMetric: initial);
+      if (result != null) {
+        await controller.submitEntry(result);
+      }
     }
 
     return Scaffold(
