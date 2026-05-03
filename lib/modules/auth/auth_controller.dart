@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:pukaar/app/routes/app_routes.dart';
 import 'package:pukaar/data/services/auth_service.dart';
+import 'package:pukaar/shared/utils/snackbar_utils.dart';
 
 class AuthController extends GetxController {
   AuthController({required this.authService});
@@ -38,7 +39,7 @@ class AuthController extends GetxController {
     } on SignInCancelledException {
       // User closed the picker — no snackbar.
     } catch (e, _) {
-      Get.snackbar('Sign in failed', '$e');
+      showErrorSnack('$e');
     } finally {
       isLoading.value = false;
     }
@@ -51,7 +52,7 @@ class AuthController extends GetxController {
       await authService.signOut();
       Get.offAllNamed(AppRoutes.login);
     } catch (e, _) {
-      Get.snackbar('Sign out failed', '$e');
+      showErrorSnack('$e');
     } finally {
       isLoading.value = false;
     }

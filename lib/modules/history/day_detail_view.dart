@@ -6,6 +6,8 @@ import 'package:pukaar/data/models/activity_entry.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
+import 'package:pukaar/shared/utils/snackbar_utils.dart';
+import 'package:pukaar/shared/widgets/loading_indicator.dart';
 
 class DayDetailView extends StatelessWidget {
   const DayDetailView({super.key});
@@ -56,7 +58,7 @@ class DayDetailView extends StatelessWidget {
               stream: fs.streamEntriesForDateKey(dateKey),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting && !snap.hasData) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const CenteredLoading();
                 }
                 final list = snap.data ?? [];
                 if (list.isEmpty) {
@@ -80,7 +82,7 @@ class DayDetailView extends StatelessWidget {
                           await fs.deleteEntry(e.id);
                           return true;
                         } catch (err) {
-                          Get.snackbar('Could not delete', '$err');
+                          showErrorSnack('$err');
                           return false;
                         }
                       },

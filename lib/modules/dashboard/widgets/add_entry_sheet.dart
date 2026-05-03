@@ -74,6 +74,13 @@ class _AddEntrySheetState extends State<AddEntrySheet> {
       );
       return;
     }
+    const maxVal = 1000000;
+    if (parsed > maxVal) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter at most $maxVal')),
+      );
+      return;
+    }
     final note = _noteCtrl.text.trim();
     Navigator.of(context).pop(
       AddEntryResult(

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pukaar/app/routes/app_routes.dart';
 import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
+import 'package:pukaar/shared/widgets/empty_state.dart';
 
 import 'history_controller.dart';
 
@@ -40,15 +41,9 @@ class HistoryView extends GetView<HistoryController> {
       child: Obx(() {
         final days = controller.daysDescending();
         if (days.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                'No history yet.\nLog activity from the Today tab.',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-              ),
-            ),
+          return const EmptyState(
+            message: 'No history yet.\nLog activity from the Today tab.',
+            icon: Icons.history,
           );
         }
 

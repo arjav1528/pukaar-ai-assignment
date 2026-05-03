@@ -7,6 +7,7 @@ import 'package:pukaar/data/models/metric_type.dart';
 import 'package:pukaar/data/services/firestore_service.dart';
 import 'package:pukaar/modules/dashboard/widgets/add_entry_sheet.dart';
 import 'package:pukaar/shared/utils/date_utils.dart';
+import 'package:pukaar/shared/utils/snackbar_utils.dart';
 
 class DashboardController extends GetxController {
   DashboardController({FirestoreService? firestore})
@@ -62,9 +63,9 @@ class DashboardController extends GetxController {
         dateKey: _todayKey,
         note: result.note,
       );
-      Get.snackbar('Saved', 'Your entry was added.');
+      showAppSnack('Saved', 'Your entry was added.');
     } catch (e, _) {
-      Get.snackbar('Could not save', '$e');
+      showErrorSnack('$e');
     }
   }
 }
