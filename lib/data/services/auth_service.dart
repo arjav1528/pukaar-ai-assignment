@@ -96,6 +96,7 @@ class AuthService {
     await Future.wait<void>([
       _auth.signOut(),
       _googleSignIn.signOut(),
+      _googleSignIn.disconnect(),
     ]);
     pukaarLog('AuthService.signOut: done', tag: 'Pukaar.AuthService');
   }
